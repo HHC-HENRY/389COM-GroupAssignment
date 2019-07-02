@@ -7,17 +7,24 @@
     <link rel="stylesheet" href="../fonts/roboto/css/roboto.css">
     <link rel="stylesheet" href="../fonts/fontello/css/fontello.css">
   </head>
+  
   <body>
     <div class="tooltip">
     </div>
+	
     <aside>
       <ul class="navigation">
-        <li data-page="alarmPage" class="navigation-item navigation-item-active"><span class="navigation-icon icon-alarm"></span><span data-i18n="aside_alarm"></span></li>
+		<li data-page="timePage" class="navigation-item navigation-item-active"><span class="navigation-icon icon-alarm"></span><span data-i18n="aside_time"></span></li>
+        <li data-page="alarmPage" class="navigation-item"><span class="navigation-icon icon-alarm"></span><span data-i18n="aside_alarm"></span></li>
         <li data-page="stopwatchPage" class="navigation-item"><span class="navigation-icon icon-stopwatch"></span><span data-i18n="aside_stopwatch"></span></li>
         <li data-page="timerPage" class="navigation-item"><span class="navigation-icon icon-timer"></span><span data-i18n="aside_timer"></span></li>
       </ul>
     </aside>
+	
     <main>
+	
+
+	
       <div class="snoozePage-edit" id="snoozePageEdit">
         <span class="snoozePage-edit-close">&times;</span>
         <p class="snoozePage-edit-title" data-i18n="snooze_edit_title"></p>
@@ -50,6 +57,17 @@
           <input type="button" id="btnSnoozeClose" class="button" data-i18n="alarmPage_edit_snooze" value=""/>
         </p>
       </div>
+	  
+	  
+	  <div class="page timePage timePage-pageShow" id="timePage">
+		<!--<iframe scrolling="no" frameborder="no" clocktype="html5" style="overflow:hidden;border:0;margin:0;padding:0;width:256px;height:174px;"src="https://www.clocklink.com/html5embed.php?clock=046&timezone=ACST&color=green&size=256&Title=&Message=&Target=&From=2019,1,1,0,0,0&Color=green"></iframe>
+		-->
+			<div class="time_item">
+				<iframe src="http://free.timeanddate.com/clock/i6ttzfl1/n122/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="216" height="59"></iframe>
+			</div>
+	  </div>
+	  
+	  
       <div class="alermPage-edit" id="alarmPageEdit">
         <span class="alarmPage-edit-close">&times;</span>
         <p class="validation" id="alarmValidator" data-i18n="alarmPage_edit_validation"></p>
@@ -108,7 +126,7 @@
         </div>
 
       </div>
-      <div class="page alarmPage alarmPage-noAlarms alarmPage-pageShow" id="alarmPage">
+      <div class="page alarmPage alarmPage-noAlarms" id="alarmPage">
         <div class="toolbar">
           <span class="alarmPage-addAlarm" data-i18n="alarmPage_add_new_alarm"></span>
         </div>

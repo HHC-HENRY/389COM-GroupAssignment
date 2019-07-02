@@ -287,7 +287,24 @@ li.navigation-item-active::before {
   overflow-y: auto;
 }
 
+.timePage {
+  position: relative;
+  justify-content: center;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.timePage-pageShow {
+  display: flex;
+}
+
+.time_item{
+	margin:auto;
+}
+
 /* =timerPage */
+
+
 .timerPage {
   position: relative;
   justify-content: center;
@@ -298,6 +315,7 @@ li.navigation-item-active::before {
 .timerPage-pageShow {
   display: flex;
 }
+
 
 .timerPage-items {
   display: flex;

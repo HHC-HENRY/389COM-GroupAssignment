@@ -3,23 +3,25 @@
 
 var TimerHandler = {
   Create: newTimerData => {
-    const newObj = {
-      timerId: timerData.length > 0 ? Math.max(...timerData.map(p => p.timerId)) + 1 : 1,
-      name: newTimerData.name,
-      time: newTimerData.time,
-      hours: newTimerData.hours,
-      minutes: newTimerData.minutes,
-      seconds: newTimerData.seconds,
-      sound: document.querySelector('.timerPage-edit-sound-active').dataset.sound,
-      isRunning: false,
-      intervalId: null
-    };
-    timerData.push(newObj);
-    TimerHandler.PrepareUI(newObj);
-    if (timerData.length === 1) {
-      document.querySelector('.timerPage').classList.remove('timerPage-noTimers');
-    }
-    chrome.storage.local.set({'timerData': timerData});
+	if(timerData < 1){
+		const newObj = {
+		  timerId: timerData.length > 0 ? Math.max(...timerData.map(p => p.timerId)) + 1 : 1,
+		  name: newTimerData.name,
+		  time: newTimerData.time,
+		  hours: newTimerData.hours,
+		  minutes: newTimerData.minutes,
+		  seconds: newTimerData.seconds,
+		  sound: document.querySelector('.timerPage-edit-sound-active').dataset.sound,
+		  isRunning: false,
+		  intervalId: null
+		};
+		timerData.push(newObj);
+		TimerHandler.PrepareUI(newObj);
+		if (timerData.length === 1) {
+		  document.querySelector('.timerPage').classList.remove('timerPage-noTimers');
+		}
+		chrome.storage.local.set({'timerData': timerData});
+	}
   },
   Update: (timerId, newTimerData) => {
     const relatedTimerIndex = timerData.findIndex(p => p.timerId === parseInt(timerId));
