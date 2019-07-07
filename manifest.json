@@ -1,27 +1,36 @@
 {
-  "version": "0.1.1",
   "manifest_version": 2,
-  "default_locale": "en",
-  "permissions" : ["storage", "alarms"],
-  "name": "__MSG_chrome_extension_name__",
-  "homepage_url": "http://eccorem.com/apps/timer.html",
-  "description": "__MSG_chrome_extension_description__",
-  "background": {"scripts": ["background.js"], "persistent": false},
+  "name": "Web Time Tracker with Water Intake Reminder",
+  "short_name": "Web Time Tracker with Hydrator",
+  "description": "Tells you how much time you're spending/wasting on social media and other websites and remind you to drink for every selected period.",
+  "author": "ZQ Ooi",
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "version": "0.0.10",
+  "permissions": ["storage", "alarms", "tabs", "notifications"],
+  "background": {
+    "persistent": false,
+    "scripts": ["timekeeper.js"]
+  },
   "browser_action": {
-    "default_popup": "data/popup/popup.html",
-    "default_title": "__MSG_browser_action_title__",
     "default_icon": {
-      "16": "data/icons/16.png",
-      "32": "data/icons/32.png",
-      "48": "data/icons/48.png",
-      "64": "data/icons/64.png"
-    }
+      "128": "icons/ic2-128.png"
+    },
+    "default_title": "Configure Web Time Tracker",
+    "default_popup": "options.html"
   },
   "icons": {
-    "16": "data/icons/16.png",
-    "32": "data/icons/32.png",
-    "48": "data/icons/48.png",
-    "64": "data/icons/64.png",
-    "128": "data/icons/128.png"
-  }
+    "128": "icons/ic2-128.png",
+    "200": "icons/ic2-200.png",
+    "400": "icons/ic2-400.png",
+    "512": "icons/bottle.png"
+  },
+  "applications": {
+    "gecko": {
+      "id": "@wbttwwir"
+    }
+  },
+  "web_accessible_resources": ["empty_image.png"]
 }

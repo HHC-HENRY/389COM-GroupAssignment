@@ -1,66 +1,43 @@
-'use strict';
+const facts = [
+  'Do you know adult humans are 60 percent water, and our blood is 90 percent water? 🌊',
+  'Drinking water instead of soda can help with weight loss! 🥛',
+  'Do you know drinking water reduces the chance of a hangover? 🍺',
+  'Drinking water helps in enhancing physical performance! 🏋',
+  'Drinking water improves your skin health and beauty! 💃',
+  'Drinking water instead of other liquids will help you in weight loss! 🧘‍♀️',
+  'Drinking more water may help relieve Constipation! 🚽',
+  'Pace yourself to approach half of your recommended consumption by midday! 🌞',
+  'Drinking water when you first get up helps you to improve your immune system! 💪',
+  'Do you know drinking water before a workout will protect you from dehydration? 🏋',
+  'Drinking water helps you to regulate Body temperature! 🚶‍♂️'
+];
+const notificationMessage = 'Hey buddy, you should drink some water.';
+const notificationTitle = 'Stay hydrated!';
+var timeInterval = 1;
 
-window.setTimeout(function () {
-  chrome.storage.local.get("version", e => {
-    if (!e.version) {
-      var version = chrome.runtime.getManifest().version;
-      var homepage = chrome.runtime.getManifest().homepage_url;
-      var url = homepage + "?v=" + version + "&type=install";
-      chrome.tabs.create({"url": url, "active": true});
-      chrome.storage.local.set({"version": version}, function () {});
-    }
+restartAlarms();
+browser.runtime.onMessage.addListener(handleMessage);
+
+function handleMessage(request, sender, sendResponse) {
+  timeInterval = request.time;
+  sendResponse({
+    response: 'Time received successfully'
   });
-}, 3000);
+  restartAlarms();
+}
 
-chrome.runtime.onMessage.addListener(function ({method, name, params}) {
-  if (method === "alarms.create") {
-    chrome.alarms.create(name, params);
-  }
-});
-
-chrome.alarms.onAlarm.addListener(alarm => {
-  chrome.windows.create({'url': 'data/alarmShow/alarmShow.html', 'type': 'popup', width: 500, height: 400}, function(newWindow) {
-    chrome.storage.local.get('currentWindow', result => {
-      if (result.currentWindow !== undefined) {
-        chrome.windows.get(result.currentWindow, window => {
-          if (window !== undefined && window.id === result.currentWindow) {
-            chrome.windows.remove(result.currentWindow);
-          }
-        });
-      }
-    });
-    chrome.storage.local.set({'currentWindow': newWindow.id});
-    if (alarm.name.indexOf('timer') !== -1) {
-      chrome.storage.local.get('timerData', result => {
-        const relatedTimerIndex = result.timerData.findIndex(p => p.timerId === parseInt(alarm.name[alarm.name.length - 1]));
-        chrome.storage.local.set({'currentTimer': result.timerData[relatedTimerIndex]});
-      });
-    }
-    else {
-      chrome.storage.local.get('alarmData', result => {
-        if (result.alarmData !== undefined) {
-          let alarmName;
-          let relatedAlarmIndex;
-          if (alarm.name.indexOf('snooze') !== -1) {
-            alarmName = alarm.name.substring(6, alarm.name.length);
-            relatedAlarmIndex = result.alarmData.findIndex(f => f.id === parseInt(alarmName));
-          }
-          else {
-            alarmName = alarm.name;
-            relatedAlarmIndex = result.alarmData.findIndex(f =>
-              f.alarmList.some(p => f.id + p === alarmName));
-          }
-          chrome.storage.local.set({'currentAlarm': result.alarmData[relatedAlarmIndex]});
-          chrome.storage.local.set({'alarmData': result.alarmData});
-        }
-      });
-    }
+browser.alarms.onAlarm.addListener(function(alarm) {
+  browser.notifications.create('waterNotification', {
+    type: 'basic',
+    iconUrl: 'icons/bottle.png',
+    title: notificationTitle,
+    message: notificationMessage + '\n' + facts[Math.floor(Math.random() * 11)]
   });
 });
 
-if (chrome.runtime.setUninstallURL) {
-  var version = chrome.runtime.getManifest().version;
-  var homepage = chrome.runtime.getManifest().homepage_url;
-  var url = homepage + "?v=" + version + "&type=uninstall";
-  chrome.runtime.setUninstallURL(url, function () {});
+function restartAlarms() {
+  browser.alarms.clearAll();
+  browser.alarms.create('waterReminder', {
+    periodInMinutes: timeInterval
+  });
 }
