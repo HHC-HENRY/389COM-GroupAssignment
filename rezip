@@ -1,2 +1,0 @@
-zip a.zip *.* chartjs/*.* icons/*.* -x *.zip
-
