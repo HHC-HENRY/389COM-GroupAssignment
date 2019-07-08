@@ -8,6 +8,9 @@
   "browser_action_title":{
     "message":"Timer"
   },
+  "aside_time":{
+	"message":"Time"
+  },
   "aside_alarm": {
     "message":"Alarm"
   },
