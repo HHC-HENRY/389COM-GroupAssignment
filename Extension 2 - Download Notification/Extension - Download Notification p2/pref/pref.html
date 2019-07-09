@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        .col1 {
+            padding-right: 20%;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+        .col2 {
+            text-align: center;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+        input[type=number] {
+            width: 80px;
+        }
+        input[type=checkbox] {
+            -moz-transform: scale(1.25);
+        }
+        tr {
+            border: solid;
+            border-width: 1px 0;
+            border-color: #bbbbbb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="prefsForm">
+        <table border="1" frame="void" rules="rows" id="prefsTable">
+            <tr id="prefsLastRow">
+                <td class="col1">
+                    <button type="submit" id="restoreDefaults">Restore Defaults</button>
+                </td>
+                <td class="col2">
+                    <button type="submit" id="savePrefs">Save</button>
+                </td>
+            </tr>
+        </table>
+        <br>
+    </form>
+
+    <script src="pref.js"></script>
+
+</body>
+
+</html>
