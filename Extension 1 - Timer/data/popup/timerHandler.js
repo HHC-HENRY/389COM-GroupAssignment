@@ -3,23 +3,31 @@
 
 var TimerHandler = {
   Create: newTimerData => {
-    const newObj = {
-      timerId: timerData.length > 0 ? Math.max(...timerData.map(p => p.timerId)) + 1 : 1,
-      name: newTimerData.name,
-      time: newTimerData.time,
-      hours: newTimerData.hours,
-      minutes: newTimerData.minutes,
-      seconds: newTimerData.seconds,
-      sound: document.querySelector('.timerPage-edit-sound-active').dataset.sound,
-      isRunning: false,
-      intervalId: null
-    };
-    timerData.push(newObj);
-    TimerHandler.PrepareUI(newObj);
-    if (timerData.length === 1) {
-      document.querySelector('.timerPage').classList.remove('timerPage-noTimers');
-    }
-    chrome.storage.local.set({'timerData': timerData});
+	if(timerData < 1){
+		const newObj = {
+		  timerId: timerData.length > 0 ? Math.max(...timerData.map(p => p.timerId)) + 1 : 1,
+		  name: newTimerData.name,
+		  time: newTimerData.time,
+		  hours: newTimerData.hours,
+		  minutes: newTimerData.minutes,
+		  seconds: newTimerData.seconds,
+		  sound: document.querySelector('.timerPage-edit-sound-active').dataset.sound,
+		  isRunning: false,
+		  intervalId: null
+		};
+		timerData.push(newObj);
+		
+		console.log(newObj);
+		
+		var txt = newObj.hours.toString() + ':' + ((newObj.minutes < 10)? '0' + newObj.minutes.toString():newObj.minutes.toString());
+		
+		chrome.browserAction.setBadgeText({text: txt});
+		TimerHandler.PrepareUI(newObj);
+		if (timerData.length === 1) {
+		  document.querySelector('.timerPage').classList.remove('timerPage-noTimers');
+		}
+		chrome.storage.local.set({'timerData': timerData});
+	}
   },
   Update: (timerId, newTimerData) => {
     const relatedTimerIndex = timerData.findIndex(p => p.timerId === parseInt(timerId));
@@ -57,6 +65,8 @@ var TimerHandler = {
       timerPageElem.classList.add('timerPage-noTimers');
       timerPageElem.classList.add('timerPage-pageShow');
     }
+	
+	chrome.browserAction.setBadgeText({text: '--:--'});
   },
   Start: function(timerObj, continueTimer = false) {
     const relatedTimerIndex = timerData.findIndex(p => p.timerId === parseInt(timerObj.timerId));
@@ -69,11 +79,26 @@ var TimerHandler = {
     timerRelatedPlayElem.classList.add('icon-pause');
     const intervalId = setInterval(function() {
       timerRelatedElem.innerText = MiliSecToTimeSec(timer.ElapsedTime * 1000);
+	  
+		var hours = Math.floor(timer.ElapsedTime / 3600);
+		var ts = timer.ElapsedTime % 3600;
+		var minutes = Math.floor(ts / 60);
+		var seconds = ts % 60;
+	  
+	  var txt;
+	  
+	  if(hours > 0 || minutes > 0)
+		txt = hours.toString() + ':' + ((minutes < 10)? '0' + minutes.toString():minutes.toString())
+	  else
+		txt = seconds.toString();
+	  
+	  chrome.browserAction.setBadgeText({text: txt});
       if (timer.ElapsedTime <= 0) {
         clearInterval(intervalId);
         timerRelatedPlayElem.classList.remove('icon-pause');
         TimerHandler.Reset(timerObj.timerId, false);
         timerRelatedElem.innerText = MiliSecToTimeSec(0);
+		chrome.browserAction.setBadgeText({text: '0:00'});
       }
     }, 1000);
     timerObj.intervalId = intervalId;
@@ -111,6 +136,7 @@ var TimerHandler = {
     relatedTimer.startTime = undefined;
     timerData[relatedTimerIndex] = relatedTimer;
     chrome.storage.local.set({'timerData': timerData});
+	chrome.browserAction.setBadgeText({text: '--:--'});
   },
   PrepareUI: newTimer => {
     if (timerData.length >= 4) {
